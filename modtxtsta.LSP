@@ -81,7 +81,7 @@
 ;;;           Project       ; -                                                               ;
 ;;;	      File          ; GetElevEG.LSP                                                   ;
 ;;;           Version       ; Betatester 02.04.190                                            ;
-;;;	      Description   ; Menampilkan elevasi dari objek LWpolyline                       ;
+;;;	      Description   ; Membuat text Elevasi Existing Ground (EG)                       ;
 ;;;                                                                                           ;
 ;;;           NOTES : Baru                                                                    ;
 ;;;********************************************************************************************
@@ -195,7 +195,7 @@
 ;;;           Project       ; -                                                               ;
 ;;;	      File          ; ModTxtSTA.LSP                                                   ;
 ;;;           Version       ; Betatester 02.04.190                                            ;
-;;;	      Description   ; Menampilkan text STA dari objek LWpolyline                      ;
+;;;	      Description   ; Membuat text Elevasi Finishing Ground (FG)                      ;
 ;;;                                                                                           ;
 ;;;           NOTES : Baru                                                                    ;
 ;;;********************************************************************************************
@@ -316,11 +316,11 @@
 ;;;           Project       ; -                                                               ;
 ;;;	      File          ; ModTxtSTA.LSP                                                   ;
 ;;;           Version       ; Betatester 02.04.190                                            ;
-;;;	      Description   ; Modufikasi Text STA Tangen hasil dari LDT                       ;
+;;;	      Description   ; Memindah text ke posisi tertentu secara horizontal linier       ;
 ;;;                                                                                           ;
 ;;;           NOTES : Baru                                                                    ;
 ;;;********************************************************************************************
-(defun c:MoveTxtLine (/ Txtlayer Star-AND End-AND Catl Bpt txt num)
+(defun c:MoveTxtLine (/ Txtlayer Star-AND End-AND Catl Bpt txt num el)
 
   (defun MoveTxt (Pt Bpt)
     (list (car Pt) (cadr Bpt))
@@ -356,7 +356,9 @@
 	) ;_ end of cons
       ) ;_ end of if
     ) ;_ end of defun
-    (GetEntName (ssget Catl) 0)
+    (if (setq ss (ssget Catl))
+      (GetEntName ss 0)
+    ) ;_ end of if
   ) ;_ end of defun
 
   (defun main ()
@@ -376,7 +378,9 @@
 		 (getpoint (strcat "\nGet Point LINIER Text " txt " Pos : "))
 	       ) ;_ end of PtTrans
 	) ;_ end of setq
-      (MoveTxtBySel (SelCatl Catl) Bpt)
+        (if (setq el (SelCatl Catl))
+            (MoveTxtBySel el Bpt)
+        );	
     ) ;_ end of if
   ) ;_ end of defun
 
@@ -384,7 +388,7 @@
   (setq	num
 	 (strcase
 	   (getstring
-	     "\nMove Linier Text Selected (E)levation-EG/(S)tation/elevation-(F)G :"
+	     "\nMove Linier Text Selected elevation-(E)G/(S)tation/elevation-(F)G :"
 	   ) ;_ end of getstring
 	 ) ;_ end of strcase
   ) ;_ end of setq
@@ -423,7 +427,7 @@
 
 (defun c:GetElevFG (/ Star-OR End-OR Star-AND FGCatl VGlayer PGlayer VGCat Bev Bpt FGe VGes InterPts XYELst)
 
-(defun InterAnyByAny (elst1 elst2 mss / res)
+(defun InterAnyByAny (elst1 elst2 mss / res tem)
   (prompt mss)
   (defun RemovSome (ls)
     (if	(null ls)			; periksa satu satu
@@ -600,6 +604,81 @@
 ;;;;;;
 ;;;;;
 
+
+;;;********************************************************************************************
+;;;	      Programmer    ; Pahor. M ,E-mail tempuyax@yahoo.com.sg                          ;
+;;;           Procedure     ; c:DelTxtCrt                                                     ;
+;;;           Date          ; Nunukan, Oktober 2022                                           ;
+;;;           Project       ; -                                                               ;
+;;;	      File          ; ModTxtSTA.LSP                                                   ;
+;;;           Version       ; Betatester 02.04.190                                            ;
+;;;	      Description   ; Delete Text yang dibuat dari lisp ini                           ;
+;;;                                                                                           ;
+;;;           NOTES : Baru                                                                    ;
+;;;********************************************************************************************
+(defun c:DelTxtCrt (/ Txtlayer Star-AND End-AND Catl Bpt txt num el)
+
+  (defun SelCatl (Catl / ss res)
+    (defun GetEntName (ss ct)
+      (if (>= ct (sslength ss))
+	(list)
+	(cons
+	  (ssname ss ct)
+	  (GetEntName ss (1+ ct))
+	) ;_ end of cons
+      ) ;_ end of if
+    ) ;_ end of defun
+    (if (setq ss (ssget Catl))
+      (GetEntName ss 0)
+    ) ;_ end of if
+  ) ;_ end of defun
+
+  (defun main ()
+    (setq
+      Star-AND (cons -4 "<AND")
+      End-AND  (cons -4 "AND>")
+      Catl
+	       (list
+		 Star-AND
+		 (cons 0 "TEXT")
+		 (cons 8 Txtlayer)
+		 End-AND
+	       ) ;_ end of list
+    ) ;_ end of setq
+    (if (setq el (SelCatl Catl))
+          (foreach e el (entdel e))
+          (prompt "\n**Not Object**")
+   ) ;_ end of if
+) ;_ end of defun
+
+  (initget 1 "E S F")
+  (setq	num
+	 (strcase
+	   (getstring
+	     "\nDelete Text Selected <elev-(E)G/(S)tation/elev-(F)G> :"
+	   ) ;_ end of getstring
+	 ) ;_ end of strcase
+  ) ;_ end of setq
+  (cond
+    ((eq num "E")
+     (setq Txtlayer "TxtElevEG")
+     (setq txt "Elevation EG")
+     (main)
+    )
+    ((eq num "S")
+     (setq Txtlayer "TxtStaEG")
+     (setq txt "Station")
+     (main)
+    )
+    ((eq num "F")
+     (setq Txtlayer "TxtElevFG")
+     (setq txt "Elevation FG")
+     (main)
+    )
+    (t num)
+  ) ;_ end of cond
+  (princ)
+) ;_ end of defun
 
 
 

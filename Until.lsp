@@ -237,33 +237,26 @@
 
 ;; PLINE Parameters
 (setq
-  SubClass: 100
-  NumberOfVertex:
-   90
-  PolyLinePlag:
-   70
-  -Open	0
-  -Close 1
-  -Curve-fit
-   2
-  -Spline-fit
-   4
-  -3Dpolyline
-   8
-  -3DpolygonMesh
-   16
-  -PolygonMeshClosed
-   32
-  -PolyfaceMesh
-   64
+  SubClass: 		100
+  NumberOfVertex:   	90
+  FollowFlag:		66
+   -VerticesFollow	1
+   
+  PolyLinePlag:    	70
+  -Open			0
+  -Close 		1
+  -Curve-fit    	2
+  -Spline-fit    	4
+  -3Dpolyline    	8
+  -3DpolygonMesh    	16
+  -PolygonMeshClosed    32
+  -PolyfaceMesh    	64
 
-  CurvesSmooth:
-   75
-  -NoSmooth 0
-  -Quadratic
-   5
-  -Cubic 6
-  -Bezier 8
+  CurvesSmooth:    	75
+  -NoSmooth 		0
+  -Quadratic    	5
+  -Cubic 		6
+  -Bezier 		8
 ) ;_ end of setq
 
 ;; TEXT Parameters
@@ -275,11 +268,34 @@
   AlgnHor: 72
   AlgnVer: 73
 ) ;_ end of setq
+
+
+; 66 Variable attributes-follow flag
+; 	(optional; default = 0);
+; 	if the value of attributes-follow flag is 1, a series of attribute entities is expected to follow the insert,
+; 	terminated by a seqend entity
+;========================================
 ;; INSERT Parameters
 (setq
-  BlockName:
-   2
+  Attributes: 66
+  BlockName:  2
 ) ;_ end of setq
+
+
+;70 Dimension type:
+;	Values 0-6 are integer values that represent the dimension type. Values 32, 64, and 128 are bit values, which are added to the integer values (value 32 is always set in R13 and later releases)
+;	0 = Rotated, horizontal, or vertical; 1 = Aligned
+;	2 = Angular; 3 = Diameter; 4 = Radius
+;	5 = Angular 3 point; 6 = Ordinate
+;	32 = Indicates that the block reference (group code 2) is referenced by this dimension only
+;	64 = Ordinate type. This is a bit value (bit 7) used only with integer value 6. If set, ordinate is X-type; if not set, ordinate is Y-type
+;	128 = This is a bit value (bit 8) added to the other group 70 values if the dimension text has been positioned at a user-defined location rather than at the default location 
+;========================================
+;; DIMENSION Parameters
+(setq
+  Dimtype: 70
+) ;_ end of setq
+
 
 (defun alist<-plist (plist)
   (if (null plist)
@@ -340,6 +356,17 @@
 		42
 		;;2pi
 ) ;_ end of setq
+
+(defun Create-Dimension (Params)
+  (Create-entity
+    "DIMENSION"
+    (append
+      (list Dimtype: 32) ; type horizontal
+      Params
+    ) ;_ end of append
+  ) ;_ end of Create-entity
+  (GetHandle)				; handle object
+) ;_ end of defun
 
 (defun Create-Ellipse (Params)
   (Create-entity
