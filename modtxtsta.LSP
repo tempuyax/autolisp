@@ -9,7 +9,7 @@
 ;;;                                                                                           ;
 ;;;           NOTES : Baru                                                                    ;
 ;;;********************************************************************************************
-(defun c:ModTxtSTA (/ Txtlayer Star-AND End-AND Catl)
+(defun c:ModTxtSTA (/ Txtlayer Star-AND End-AND Catl el)
 
   (defun DelTxtPCPT (s / ls)
     (defun DelStr (ls s)
@@ -55,7 +55,9 @@
 	) ;_ end of cons
       ) ;_ end of if
     ) ;_ end of defun
-    (GetEntName (ssget Catl) 0)
+    (if (setq ss (ssget Catl))
+      (GetEntName ss 0)
+    ) ;_ end of if
   ) ;_ end of defun
 
   (setq
@@ -70,7 +72,10 @@
 	       End-AND
 	     ) ;_ end of list
   ) ;_ end of setq
-  (ModTxtBySel (SelCatl Catl))
+  (if (setq el (SelCatl Catl))
+          (ModTxtBySel el)
+          (prompt "\n**Not Object**")
+  ) ;_ end of if
   (princ)
 ) ;_ end of defun
 
@@ -380,7 +385,8 @@
 	) ;_ end of setq
         (if (setq el (SelCatl Catl))
             (MoveTxtBySel el Bpt)
-        );	
+            (prompt "\n**Not Object**")
+        ); if	
     ) ;_ end of if
   ) ;_ end of defun
 
@@ -648,7 +654,7 @@
     (if (setq el (SelCatl Catl))
           (foreach e el (entdel e))
           (prompt "\n**Not Object**")
-   ) ;_ end of if
+    ) ;_ end of if
 ) ;_ end of defun
 
   (initget 1 "E S F")
@@ -682,6 +688,17 @@
 
 
 
+;;;********************************************************************************************
+;;;	      Programmer    ; Pahor. M ,E-mail tempuyax@yahoo.com.sg                          ;
+;;;           Procedure     ; c:GetHV                                                         ;
+;;;           Date          ; Nunukan, April 2019                                             ;
+;;;           Project       ; -                                                               ;
+;;;	      File          ; ModTxtSTA.LSP                                                   ;
+;;;           Version       ; Betatester 02.04.190                                            ;
+;;;	      Description   ; Mengambil view & mengambil block hwin utk initial rot viewport  ;
+;;;                                                                                           ;
+;;;           NOTES : Baru                                                                    ;
+;;;********************************************************************************************
 (defun c:GetHV ()
 
   (defun CrtCircle (p r)
@@ -746,12 +763,25 @@
 ) ;_ end of defun
 
 
+;;;********************************************************************************************
+;;;	      Programmer    ; Pahor. M ,E-mail tempuyax@yahoo.com.sg                          ;
+;;;           Procedure     ; c:PutHV                                                         ;
+;;;           Date          ; Nunukan, April 2019                                             ;
+;;;           Modified      ; Nunukan, Oktober 2022                                           ;
+;;;           Project       ; -                                                               ;
+;;;	      File          ; ModTxtSTA.LSP                                                   ;
+;;;           Version       ; Betatester 02.04.190                                            ;
+;;;	      Description   ; Merotasi viewport di layout longsection                         ;
+;;;                                                                                           ;
+;;;           NOTES : Baru                                                                    ;
+;;;********************************************************************************************
 (defun c:PutHV ()
   (if (eq (getvar 'TILEMODE) 0)
     (progn
       (command "-view" "r" "tes" pause)
       (c:mvsetup)
       (prompt "\nPut View Ok")
+      (command "_.PSPACE")
     ) ;_ end of progn
     (prompt "\n**harus ke layar layot**")
   ) ;_ end of if
