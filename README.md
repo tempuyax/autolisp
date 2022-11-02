@@ -11,15 +11,20 @@ tertentu pada saat saya membuat gambar jalan raya.
 ada beberapa fungsi yg bisa di jalankan seperti
 dibawah ini ;
 
-y- ModTxtSTA
+- ModTxtSTA
+
     Fungsi: 
+
           Untuk menghapus Character text yg dipilih 
           pada STA yg di buat oleh Landdesktop (LDD)
 
 - GetElevEG
+
     Fungsi: 
+
          Untuk menampilkan text nilai elevasi sebuah
          Object LWPolyline
+
 - GetElevFG
 - GetStaEG
 - MoveTxtLine
