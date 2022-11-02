@@ -1,35 +1,42 @@
 # autolisp
-<p align=justify>Adalah bahasa lisp yg khusus dipasang pd Aplikasi
-Autocad, utk tujuan mempermudah & mempercepat 
+<p align=justify>Adalah bahasa lisp yang khusus 
+dipasang pada Aplikasi Autocad, utk tujuan mempermudah & mempercepat 
 pembuatan gambar-gambar teknik dlm 2D maupun 3D.
-utk cara penulisan, maupun cara penulisan sytax nya
-silahkan baca Deloper Autolisp di menu Help.</p>
+untuk cara pemoggraman, maupun cara penulisan sytax nya
+silahkan baca Developer Autolisp di menu Help.</p>
 
 # modtxtsta.LSP
-<p align=justify>Adalah code lisp yg saya tulis utk kegunaan
-tertentu pada saat saya membuat gambar jalan raya.
-ada beberapa fungsi yg bisa di jalankan seperti
-dibawah ini ;</p>
+<p align=justify>Adalah code lisp yg saya tulis untuk 
+kegunaan tertentu pada saat saya membuat gambar 
+jalan raya. Ada beberapa fungsi yang bisa di jalankan
+seperti dibawah ini ;</p>
 
-- ModTxtSTA
-
-    Fungsi: 
-
-          Untuk menghapus Character text yg dipilih 
-          pada STA yg di buat oleh Landdesktop (LDD)
-
-- GetElevEG
+- **ModTxtSTA**
 
     Fungsi: 
 
-         Untuk menampilkan text nilai elevasi sebuah
-         Object LWPolyline
+    <p align=justify>Untuk menghapus Character 
+    text yg dipilih  pada text STA yangg di buat oleh 
+    Landdesktop (LDD)</p>
 
-- GetElevFG
-- GetStaEG
-- MoveTxtLine
-- DelTxtCrt
-- GetHV
-- PutHV
+- **GetElevEG**
+
+    Fungsi: 
+
+    <p align=justify>Untuk menampilkan text nilai 
+    elevasi Eart Ground sebuah Object LWPolyline</p>
+
+- **GetElevFG**
+
+    Fungsi:
+
+    <p align=justify>Untuk menampilkan text nilai
+     elevasi Finish Ground Object LWPolyline 
+    </p>
+- **GetStaEG**
+- **MoveTxtLine**
+- **DelTxtCrt**
+- **GetHV**
+- **PutHV**
 
 
