@@ -779,8 +779,8 @@
   (if (eq (getvar 'TILEMODE) 0)
     (progn
       (command "-view" "r" "tes" pause)
-      (c:mvsetup)
       (prompt "\nPut View Ok")
+      (c:mvsetup)
       (command "_.PSPACE")
     ) ;_ end of progn
     (prompt "\n**harus ke layar layot**")
