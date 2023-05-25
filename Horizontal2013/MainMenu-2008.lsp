@@ -33,6 +33,9 @@
   ;********************************************************************************************
 
 (defun C:Horizontal (/ num)
+  (if (/= (getvar 'ATTREQ) 1)
+    (setvar "ATTREQ" 1)
+  ) ;_ end of if
   (if (/= (getvar 'AUPREC) 4)
     (setvar "AUPREC" 4)
   ) ;_ end of if
@@ -69,6 +72,6 @@
       "\nEditor & Programmer : Pahor. M | tempuyax@yahoo.com.sg | Nunukan - Nopember 2015"
     ) ;_ end of strcat
   ) ;_ end of prompt
-    (princ)
+  (princ)
 ) ;_ end of defun
-  ;==============================================
+					;==============================================
