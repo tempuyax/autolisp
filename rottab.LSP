@@ -230,6 +230,7 @@
 		End-AND
 	      ) ;_ end of list
   ) ;_ end of setq
+
   (if (setq eld (SelCatl dCatl dMss))
     (if	(setq els (OneSelCatl sCatl sMss))
       (RotTabBySel eld els)
@@ -240,3 +241,108 @@
   (princ)
 ) ;_ end of defun
 
+;;;********************************************************************************************
+;;;	      Programmer    ; Pahor. M ,E-mail tempuyax@yahoo.com.sg                          ;
+;;;           Procedure     ; c:RotObj                                                        ;
+;;;           Date          ; Nunukan, Mei 2023                                               ;
+;;;           Project       ; -                                                               ;
+;;;	      File          ; RotObj.LSP                                                      ;
+;;;           Version       ; Betatester 02.04.190                                            ;
+;;;	      Description   ; Rotate hanya Pilihan Object yang berlayer "0"                   ;
+;;;                                                                                           ;
+;;;           NOTES : Baru                                                                    ;
+;;;********************************************************************************************
+(defun c:RotObj	(/	  dMss	   sMss	    BlkName  Begin-AND
+		 End-AND  Begin-OR End-OR   sCatl    dCatl    els
+		 eld	  Bpt
+		)
+
+  (defun RotObjMod (ed es Bpt / esl Ang)
+    (setq
+      esl (entget es)
+      Ang (cdr (assoc 50 esl))
+    ) ;_ end of setq
+    (LM:RotateByMatrix			; Lee mac function
+      (vlax-ename->vla-object ed)	; nama entitiy
+      Bpt				; koordinat tidak perlu di translate
+      Ang				; sudut relatif menjadi statif
+    ) ;_ end of LM:RotateByMatrix
+    (prompt "\nDONE")
+  ) ;_ end of defun
+
+  (defun RotObjBySel (eld els Bpt)
+    (if	(null eld)			; periksa satu satu
+      t
+      (progn
+	(RotObjMod (car eld) els Bpt)
+	(RotObjBySel (cdr eld) els Bpt)
+      ) ;_ end of progn
+    ) ;_ end of if
+  ) ;_ end of defun
+
+  (defun OneSelCatl (Catl mss / ss)
+    (prompt mss)
+    (if	(setq ss (ssget ":S" Catl))
+      (ssname ss 0)
+    ) ;_ end of if
+  ) ;_ end of defun
+
+  (defun SelCatl (Catl Mss / ss res)
+    (prompt mss)
+    (defun GetEntBlkName (ss ct)
+      (if (>= ct (sslength ss))
+	(list)
+	(cons
+	  (ssname ss ct)
+	  (GetEntBlkName ss (1+ ct))
+	) ;_ end of cons
+      ) ;_ end of if
+    ) ;_ end of defun
+    (if	(setq ss (ssget Catl))
+      (GetEntBlkName ss 0)
+    ) ;_ end of if
+  ) ;_ end of defun
+
+  (setq
+    sBlkName  "hwin"
+    sMss      "==Pick View hwin block=="
+    dMss      "==Select Any Object and enter=="
+    Begin-AND (cons -4 "<AND")
+    End-AND   (cons -4 "AND>")
+    Begin-OR  (cons -4 "<OR")
+    End-OR    (cons -4 "OR>")
+    sCatl
+	      (list
+		Begin-AND
+		(cons 0 "INSERT")
+		(cons 2 sBlkName)
+		End-AND
+	      ) ;_ end of list
+    dCatl
+	      (list
+		Begin-AND
+		(cons 8 "0")
+		Begin-OR
+		(cons 0 "LWPOLYLINE")
+		(cons 0 "LINE")
+		(cons 0 "TEXT")
+		End-OR
+		End-AND
+	      ) ;_ end of list
+  ) ;_ end of setq
+  (if (setq Bpt
+	     (GetPtTrans
+	       (getpoint (strcat "\nGet Point BasePoint : "))
+	     ) ;_ end of GetPtTrans
+      ) ;_ end of setq  
+    (if	(setq eld (SelCatl dCatl dMss))
+      (if (setq els (OneSelCatl sCatl sMss))
+	(RotObjBySel eld els Bpt)
+	(prompt "\n**Noting hwin Blok Object**")
+      ) ;_ end of if
+      (prompt "\n**Noting Tabel Blok Object**")
+    ) ;_ end of if
+    (prompt "\n**Noting BasePoint**")
+  ) ;_ end of if
+  (princ)
+) ;_ end of defun
