@@ -75,3 +75,52 @@ seperti dibawah ini ;</p>
     </p>
 
 
+#### rottab.LSP
+<p align=justify>ini Adalah kumpulan code lisp 
+untuk merotasi object pads Cad yang saya tulis untuk 
+menambah fitur lisp saya. 
+Adapun fungsi yang bisa di jalankan
+seperti dibawah ini ;</p>
+
+- **RotTab**
+
+    Fungsi: 
+
+    <p align=justify>Untuk merotasi Satu buah object Tabel 
+    Horizontal, agar sesuai dengan bidang rotasi view. 
+    Bertujuan supaya gambar terlihat lebih rapi. 
+    </p>
+
+- **RotTxt**
+
+    Fungsi: 
+
+    <p align=justify>Untuk merotasi Satu buah object text 
+     STA sebesar 180 derajat. Bertujuan untuk merapikan text STA
+     jika dimirror dari kanan kekiri, atau sebalik nya. 
+     </p>
+
+- **RotTxtSTA**
+
+    Fungsi:
+
+    <p align=justify>Untuk merotasi banyak object Text STA
+     sebesar 180 derajat. 
+    </p>
+
+- **RotTab4View**
+
+    Fungsi:
+
+    <p align=justify>Untuk merotasi banyak Object Tabel
+    Horizontal sesuai view. 
+    </p>
+
+- **RotObj**
+
+    Fungsi:
+
+    <p align=justify>Untuk merotasi object LwPolyLine, Line 
+    dan text menyesuaikan view. 
+    </p>
+
