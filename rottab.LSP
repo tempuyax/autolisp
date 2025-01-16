@@ -75,7 +75,7 @@
 ;;;           Version       ; Betatester 02.04.190                                            ;
 ;;;	      Description   ; Rotate Text STA hasil dari LDT                                  ;
 ;;;                                                                                           ;
-;;;           NOTES : untuk seleksi banyak objek tertentu                                     ;
+;;;           NOTES : untuk seleksi banyak objek Text dgn Layer tertentu                      ;
 ;;;********************************************************************************************
 (defun c:RotTxtSTA (/ Txtlayer Begin-AND End-AND Catl el)
 
@@ -83,13 +83,24 @@
     (+ a (* 1 pi))
   ) ;_ end of defun
 
-  (defun RotTxtMod (e)
-    (entmod
-      (subst (cons 50 (RotTxt (cdr (assoc 50 (entget e)))))
-	     (assoc 50 (entget e))
-	     (entget e)
-      ) ;_ end of subst
-    ) ;_ end of entmod
+  (defun RotTxtMod (e / eDXF)
+    (setq eDXF (entget e))
+    (setq eDXF (subst (cons 50 (RotTxt (cdr (assoc 50 eDXF))))
+		      (assoc 50 eDXF)
+		      eDXF
+	       ) ;_ end of subst
+    ) ;_ end of setq
+    (setq eDXF (subst (cons 73 3)	; Align Top
+		      (assoc 73 eDXF)
+		      eDXF
+	       ) ;_ end of subst
+    ) ;_ end of setq
+    (setq eDXF (subst (cons 72 1)	; Align Center
+		      (assoc 72 eDXF)
+		      eDXF
+	       ) ;_ end of subst
+    ) ;_ end of setq
+    (entmod eDXF)
     (entupd e)
   ) ;_ end of defun
 
@@ -305,8 +316,8 @@
 
   (setq
     sBlkName  "hwin"
-    sMss      "==Pick View hwin block=="
-    dMss      "==Select Any Object and enter=="
+    sMss      "==Select View hwin block=="
+    dMss      "==Select LWPOLYLINE, LINE, TEXT and enter=="
     Begin-AND (cons -4 "<AND")
     End-AND   (cons -4 "AND>")
     Begin-OR  (cons -4 "<OR")
