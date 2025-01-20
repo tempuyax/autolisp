@@ -337,6 +337,8 @@
 		(cons 0 "LWPOLYLINE")
 		(cons 0 "LINE")
 		(cons 0 "TEXT")
+		(cons 0 "LEADER")
+		(cons 0 "MTEXT")
 		End-OR
 		End-AND
 	      ) ;_ end of list
