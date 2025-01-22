@@ -1,24 +1,24 @@
 (vl-load-com)
-(defun c:rottab	(/ es ed esl edl New old)
+(defun c:rottab	(/ es ed els eld New old)
   (if (setq es (car (entsel "Select Source from hwin : ")))
     (if	(setq ed (car (entsel "\nSelect Distination to table : ")))
       (progn
 	(setq
-	  esl (entget es)
-	  edl (entget ed)
+	  els (entget es)
+	  eld (entget ed)
 	) ;_ end of setq
 	(if
 	  (and
-	    (eq (cdr (assoc 0 esl)) "INSERT")
+	    (eq (cdr (assoc 0 els)) "INSERT")
 					;(or
-	    (eq (cdr (assoc 2 esl)) "hwin")
-					;(eq (cdr (assoc 2 edl)) "fctable")
+	    (eq (cdr (assoc 2 els)) "hwin")
+					;(eq (cdr (assoc 2 eld)) "fctable")
 					;) ;_ end of or
 	  ) ;_ end of and
 	   (progn
-	     (setq New (cdr (assoc 50 esl)))
-	     (setq Old (cdr (assoc 50 edl)))
-	     (setq bpt (cdr (assoc 10 edl))) ; base point of block 
+	     (setq New (cdr (assoc 50 els)))
+	     (setq Old (cdr (assoc 50 eld)))
+	     (setq bpt (cdr (assoc 10 eld))) ; base point of block 
 	     (LM:RotateByMatrix		; Lee mac function
 	       (vlax-ename->vla-object ed) ; nama entitiy
 	       bpt			;koordinat tidak perlu di translate
@@ -35,21 +35,21 @@
 ) ;_ end of defun
 
 ;;;           NOTES : untuk seleksi hanya satu objek tertentu                                 ;
-(defun c:rottxt	(/ ed edl New old)
+(defun c:rottxt	(/ ed eld New old)
   (if (setq ed (car (entsel "Select of text : ")))
     ;;(if	(setq bpt (getpoint "\nBase Point : "))
     (progn
       (setq
-	edl (entget ed)
+	eld (entget ed)
       ) ;_ end of setq
       (if
 	(and
-	  (eq (cdr (assoc 0 edl)) "TEXT")
-	  ;;(eq (cdr (assoc 8 edl)) "STA") dimatikan
+	  (eq (cdr (assoc 0 eld)) "TEXT")
+	  ;;(eq (cdr (assoc 8 eld)) "STA") dimatikan
 	) ;_ end of and
 	 (progn
-	   (setq Old (cdr (assoc 50 edl)))
-	   (setq bpt (cdr (assoc 11 edl)))
+	   (setq Old (cdr (assoc 50 eld)))
+	   (setq bpt (cdr (assoc 11 eld)))
 	   (setq New (* 1 pi))		; 180d
 	   (LM:RotateByMatrix		; Lee mac function
 	     (vlax-ename->vla-object ed) ; nama entitiy
@@ -165,13 +165,13 @@
 		      els      eld
 		     )
 
-  (defun RotTabMod (ed es / esl edl New Old bpt)
+  (defun RotTabMod (ed es / els eld New Old bpt)
     (setq
-      esl (entget es)
-      edl (entget ed)
-      New (cdr (assoc 50 esl))
-      Old (cdr (assoc 50 edl))
-      bpt (cdr (assoc 10 edl))		; base point of block 
+      els (entget es)
+      eld (entget ed)
+      New (cdr (assoc 50 els))
+      Old (cdr (assoc 50 eld))
+      bpt (cdr (assoc 10 eld))		; base point of block 
     ) ;_ end of setq
     (LM:RotateByMatrix			; Lee mac function
       (vlax-ename->vla-object ed)	; nama entitiy
@@ -247,7 +247,7 @@
       (RotTabBySel eld els)
       (prompt "\n**Not hwin Blok Object**")
     ) ;_ end of if
-    (prompt "\n**Not Tabel Blok Object**")
+    (prompt "\n**Notting Tabel Blok Object**")
   ) ;_ end of if
   (princ)
 ) ;_ end of defun
@@ -261,6 +261,11 @@
 ;;;           Version       ; Betatester 02.04.190                                            ;
 ;;;	      Description   ; Rotate hanya Pilihan Object yang berlayer "0"                   ;
 ;;;                                                                                           ;
+;;;           Local Variable      :                                                           ;
+;;;              es 	= entity source                                                       ;
+;;;              els	= entity list of source                                               ;
+;;;              eld    = entity list of distination                                          ;
+;;;                                                                                           ;
 ;;;           NOTES : Baru                                                                    ;
 ;;;********************************************************************************************
 (defun c:RotObj	(/	  dMss	   sMss	    BlkName  Begin-AND
@@ -268,10 +273,10 @@
 		 eld	  Bpt
 		)
 
-  (defun RotObjMod (ed es Bpt / esl Ang)
+  (defun RotObjMod (ed es Bpt / els Ang)
     (setq
-      esl (entget es)
-      Ang (cdr (assoc 50 esl))
+      els (entget es)
+      Ang (cdr (assoc 50 els))
     ) ;_ end of setq
     (LM:RotateByMatrix			; Lee mac function
       (vlax-ename->vla-object ed)	; nama entitiy
