@@ -1,0 +1,7 @@
+esc 	: To Menu VIM
+esc s	: To editor VIM
+
+:x	: save & exit 
+:w	: save
+:w {File}	: save in name file
+ 
